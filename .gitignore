@@ -1,0 +1,17 @@
+### Eclipse ###
+# Covers Eclipse IDE
+
+.classpath
+.project
+.settings/
+.bak
+.metadata
+/RemoteSystemsTempFiles
+
+### Maven ###
+target/
+
+**\.classpath
+**\.project
+**\.class
+/bin/
