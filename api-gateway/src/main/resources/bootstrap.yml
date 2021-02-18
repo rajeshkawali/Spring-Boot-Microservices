@@ -1,0 +1,55 @@
+server:
+  port: ${port:9191}
+
+spring:
+  application:
+    name: api-gateway
+
+zuul:
+  routes:
+    employee-service:
+      path: /employee/**
+      serviceId: employee-service
+      filters:
+        - name: CircuitBreaker
+          args:
+            name: employee-service-fallback
+            fallbackuri: forward:/employeeServiceFallBack
+    department-service:
+      path: /department/**
+      url: http://localhost:9004
+      predicates:
+        - Path=/department/**
+      filters:
+        - name: CircuitBreaker
+          args:
+            name: department-service-fallback
+            fallbackuri: forward:/departmentServiceFallBack
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: THREAD
+          thread:
+            timeoutInMilliseconds: 60000
+  dashboard:
+    proxy-stream-allow-list: "*"
+
+ribbon:
+  OkToRetryOnAllOperations: true
+  ReadTimeout: 100000
+  ConnectTimeout: 100000
+  MaxAutoRetries: 3
+  MaxAutoRetriesNextServer: 3
+
+eureka: 
+  instance:
+    prefer-ip-address: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: hystrix.stream

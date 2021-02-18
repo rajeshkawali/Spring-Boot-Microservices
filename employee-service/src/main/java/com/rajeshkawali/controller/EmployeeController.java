@@ -3,6 +3,7 @@ package com.rajeshkawali.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,9 +22,13 @@ public class EmployeeController {
 	@Autowired
 	private EmployeeService employeeService;
 	
+	@Value("${message}")
+    private String messageFromGit;
+	
 	@GetMapping("/{employeeId}")
 	public Employee getEmployeeDetails(@PathVariable("employeeId") Long employeeId) {
 		log.info("EmployeeController.getEmployeeDetails()");
+		log.info(messageFromGit);
 		Employee employee = employeeService.getEmployeeDetails(employeeId);
 		return employee;
 	}
@@ -37,6 +42,7 @@ public class EmployeeController {
 	@GetMapping("/details/{employeeId}")
 	public ResponseWrapperClass getEmployeeDepartmentDetails(@PathVariable("employeeId") Long employeeId) {
 		log.info("EmployeeController.getEmployeeDepartmentDetails()");
+		log.info(messageFromGit);
 		ResponseWrapperClass employeeDetails = employeeService.getEmployeeDepartmentDetails(employeeId);
 		return employeeDetails;
 	}
